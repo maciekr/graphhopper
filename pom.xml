@@ -76,7 +76,7 @@
         <module>core</module>
         <module>tools</module>
         <module>web</module>
-        <module>android</module>
+        <!--<module>android</module>-->
     </modules>
         
     <build>        

@@ -17,9 +17,10 @@
  */
 package com.graphhopper;
 
-import com.graphhopper.util.PointList;
 import com.graphhopper.util.InstructionList;
+import com.graphhopper.util.PointList;
 import com.graphhopper.util.shapes.BBox;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +29,10 @@ import java.util.List;
 /**
  * Wrapper to simplify output of GraphHopper.
  * <p/>
+ *
  * @author Peter Karich
  */
-public class GHResponse
-{
+public class GHResponse {
     private PointList list = PointList.EMPTY;
     private double distance;
     private long time;
@@ -39,24 +40,21 @@ public class GHResponse
     private List<Throwable> errors = new ArrayList<Throwable>(4);
     private InstructionList instructions = new InstructionList(0);
     private boolean found;
+    private PointPair pointPair;
 
-    public GHResponse()
-    {
+    public GHResponse() {
     }
 
-    public GHResponse setPoints( PointList points )
-    {
+    public GHResponse setPoints(PointList points) {
         list = points;
         return this;
     }
 
-    public PointList getPoints()
-    {
+    public PointList getPoints() {
         return list;
     }
 
-    public GHResponse setDistance( double distance )
-    {
+    public GHResponse setDistance(double distance) {
         this.distance = distance;
         return this;
     }
@@ -64,13 +62,11 @@ public class GHResponse
     /**
      * @return distance in meter
      */
-    public double getDistance()
-    {
+    public double getDistance() {
         return distance;
     }
 
-    public GHResponse setTime( long timeInSec )
-    {
+    public GHResponse setTime(long timeInSec) {
         this.time = timeInSec;
         return this;
     }
@@ -78,31 +74,34 @@ public class GHResponse
     /**
      * @return time in seconds
      */
-    public long getTime()
-    {
+    public long getTime() {
         return time;
     }
 
-    public GHResponse setFound( boolean found )
-    {
+    public GHResponse setFound(boolean found) {
         this.found = found;
         return this;
     }
 
-    public boolean isFound()
-    {
+    public boolean isFound() {
         return found;
     }
 
-    public BBox calcRouteBBox( BBox _fallback )
-    {
+    public PointPair getPointPair() {
+        return pointPair;
+    }
+
+    public void setPointPair(PointPair pointPair) {
+        this.pointPair = pointPair;
+    }
+
+    public BBox calcRouteBBox(BBox _fallback) {
         BBox bounds = BBox.INVERSE.clone();
         int len = list.getSize();
         if (len == 0)
             return _fallback;
 
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             double lat = list.getLatitude(i);
             double lon = list.getLongitude(i);
             if (lat > bounds.maxLat)
@@ -120,13 +119,11 @@ public class GHResponse
         return bounds;
     }
 
-    public String getDebugInfo()
-    {
+    public String getDebugInfo() {
         return debugInfo;
     }
 
-    public GHResponse setDebugInfo( String debugInfo )
-    {
+    public GHResponse setDebugInfo(String debugInfo) {
         this.debugInfo = debugInfo;
         return this;
     }
@@ -134,35 +131,29 @@ public class GHResponse
     /**
      * @return true if one or more error found
      */
-    public boolean hasErrors()
-    {
+    public boolean hasErrors() {
         return !errors.isEmpty();
     }
 
-    public List<Throwable> getErrors()
-    {
+    public List<Throwable> getErrors() {
         return errors;
     }
 
-    public GHResponse addError( Throwable error )
-    {
+    public GHResponse addError(Throwable error) {
         errors.add(error);
         return this;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "found:" + isFound() + ", nodes:" + list.getSize() + ": " + list.toString();
     }
 
-    public void setInstructions( InstructionList instructions )
-    {
+    public void setInstructions(InstructionList instructions) {
         this.instructions = instructions;
     }
 
-    public InstructionList getInstructions()
-    {
+    public InstructionList getInstructions() {
         return instructions;
     }
 
@@ -171,10 +162,10 @@ public class GHResponse
      * <p/>
      * TODO make it more reliable and use times from the route as well not only the points.
      * <p/>
+     *
      * @return string to be stored as gpx file
      */
-    public String createGPX( String trackName, long startTime )
-    {
+    public String createGPX(String trackName, long startTime) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SSZ");
         String header = "<?xml version='1.0' encoding='UTF-8' standalone='no' ?>"
                 + "<gpx xmlns='http://www.topografix.com/GPX/1/1' >"
@@ -188,8 +179,7 @@ public class GHResponse
         track.append("<trk><name>").append(trackName).append("</name>");
         track.append("<trkseg>");
         PointList tmpList = getPoints();
-        for (int i = 0; i < tmpList.getSize(); i++)
-        {
+        for (int i = 0; i < tmpList.getSize(); i++) {
             double lat = tmpList.getLatitude(i);
             double lon = tmpList.getLongitude(i);
             track.append("<trkpt lat='").append(lat).append("' lon='").append(lon).append("'>");

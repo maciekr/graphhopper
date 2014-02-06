@@ -142,7 +142,20 @@
                     </scanTargets>
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                 </configuration>
-            </plugin>        
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <path>/</path>
+                    <!--<tomcatUsers>tomcat-users.xml</tomcatUsers>-->
+                    <systemProperties>
+                        <graphhopper.config>../config.properties</graphhopper.config>
+                        <graphhopper.osmreader.osm>../CZSKPL.osm.pbf</graphhopper.osmreader.osm>
+                    </systemProperties>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
